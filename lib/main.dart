@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'LoginPage/login.dart';
+//import 'LoginPage/login.dart';
+import 'package:unnovate/Dashboard/dashboard.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: const Login(),
+      home: const Dashboard(),
     );
   }
 }

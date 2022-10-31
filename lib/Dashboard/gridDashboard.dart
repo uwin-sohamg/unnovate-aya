@@ -7,15 +7,17 @@ import 'package:unnovate/Room_music/room_music.dart';
 import 'package:unnovate/Child_CCTV/child_camera.dart';
 import 'package:unnovate/Child_lock/room_lock.dart';
 
+
+//creating list of items to be displayed on dashboard and items to appear on each tab.
 class GridDashboard extends StatelessWidget {
   final Items item1 = Items(
       title: "Kid's Profile",
       img: 'assets/dashboard/baby.jpg'
   );
-  final Items item2 = Items(
+  /*final Items item2 = Items(
       title: "Kid's Diet",
       img: 'assets/dashboard/diet.jpg'
-  );
+  );*/
   final Items item3 = Items(
     title: "Ambience Control",
     img: 'assets/dashboard/light.jpg'
@@ -24,25 +26,28 @@ class GridDashboard extends StatelessWidget {
     title: "Music Control",
     img: 'assets/dashboard/speaker.jpg'
   );
-  final Items item5 = Items(
+  /*final Items item5 = Items(
     title: "Smart Lock",
     img: 'assets/dashboard/lock.jpeg'
   );
   final Items item6 = Items(
     title: "Monitor",
     img: 'assets/dashboard/camera.png'
-  );
+  );*/
 
   GridDashboard({super.key});
 
+
+  //listing out navigation from each tab.
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4, item5, item6];
+    List<Items> myList = [item1, /*item2,*/ item3, item4, /*item5, item6*/];
+
     return Flexible(
       child: GridView.count(
           childAspectRatio: 1.0,
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          crossAxisCount: 2,
+          padding: const EdgeInsets.only(left: 110, right: 110),                  //original 16,16
+          crossAxisCount: 1,                                                    //original 2
           crossAxisSpacing: 18,
           mainAxisSpacing: 18,
           children: myList.map((data) {
@@ -93,6 +98,7 @@ class GridDashboard extends StatelessWidget {
   }
 }
 
+//items to be taken in the list.
 class Items {
   String title;
   String img;

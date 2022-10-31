@@ -32,12 +32,15 @@ dependencies:
   flutter:
     sdk: flutter
   fluttertoast: ^8.0.9
+  http: ^0.13.5
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   google_fonts:
+  flutter_webview_plugin: ^0.4.0
+
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +75,8 @@ flutter:
     - assets/dashboard/light.jpg
     - assets/dashboard/lock.jpeg
     - assets/dashboard/speaker.jpg
+    - assets/music/sleep.png
+    - assets/music/rhthym.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

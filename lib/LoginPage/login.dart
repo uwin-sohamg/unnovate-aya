@@ -1,9 +1,15 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unnovate/Dashboard/dashboard.dart';
 import 'signup.dart';
+import 'package:http/http.dart' as http;
 
+
+//Making a stateful widget and calling state through it.
 class Login extends StatefulWidget{
   const Login({Key? key}) : super(key: key);
 
@@ -11,10 +17,29 @@ class Login extends StatefulWidget{
   State<Login> createState() => _Login();
 }
 
+
+//login state.
 class _Login extends State<Login>{
+  
+  sendSignupData() async {
+
+    Map data = {"id": "123",
+      "name": "Shalin"
+    };
+    var body = json.encode(data);
+    var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/ex/foos/"),
+    headers: {"Content-Type": "application/json"},
+    body: body
+    );
+
+    if (kDebugMode) {
+      print(response.body);
+    }
+  }
+
   @override
   Widget build(BuildContext context){
-    return Scaffold(
+    return Scaffold(                              //returning scaffold for basic framework development.
         backgroundColor: Colors.grey[300],
         body: SingleChildScrollView(
           child: SafeArea(
@@ -25,7 +50,7 @@ class _Login extends State<Login>{
                   const SizedBox(height: 35),
 
                   Image.asset(
-                    'assets/logo/logo.png',
+                    'assets/logo/logo.png',         //setting app logo on login page.
                     height: 190,
                   ),
 
@@ -33,7 +58,7 @@ class _Login extends State<Login>{
 
                   Text(
                     'Hello Again',
-                    style: GoogleFonts.bebasNeue(
+                    style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
                       fontSize: 52,
                     ),
                   ),
@@ -61,7 +86,7 @@ class _Login extends State<Login>{
                         child: TextField(
                           decoration: (InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Email',
+                            hintText: 'Email',                                  //setting up input section for user email input.
                           )),
                         ),
                       ),
@@ -84,7 +109,7 @@ class _Login extends State<Login>{
                           obscureText: true,
                           decoration: (InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Password',
+                            hintText: 'Password',                               //setting up input section for user password input.
                           )),
                         ),
                       ),
@@ -102,6 +127,7 @@ class _Login extends State<Login>{
                         ),
                         child: TextButton(
                             onPressed: () {
+                              //sendSignupData();
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const Dashboard()),
@@ -110,7 +136,7 @@ class _Login extends State<Login>{
                               padding: const EdgeInsets.all(15),
                               child: const Center(
                                 child:  Text(
-                                  'Sign In',
+                                  'Sign In',                                    //making button to login to the dashboard.
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -135,7 +161,7 @@ class _Login extends State<Login>{
                       ),
                       GestureDetector(
                         onTap: () {    Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));},
-                        child: const Text(' Register Now',
+                        child: const Text(' Register Now',                      //making navigation, to direct user to signup page.
                           style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
@@ -151,7 +177,7 @@ class _Login extends State<Login>{
                     onPressed: () {
                       _showToast();
                     },
-                    child: const Text(' Forgot Password',
+                    child: const Text(' Forgot Password',                       //directs user to password recovery.
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -165,6 +191,8 @@ class _Login extends State<Login>{
     );
   }
 
+
+  //setting up initial state.
   late FToast fToast;
 
   @override
@@ -174,6 +202,7 @@ class _Login extends State<Login>{
     fToast.init(context);
   }
 
+  //toast pop-up to show message to the user.
   _showToast() {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
@@ -194,6 +223,7 @@ class _Login extends State<Login>{
     );
 
 
+    //setting up toast message location.
     fToast.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,

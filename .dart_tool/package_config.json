@@ -86,8 +86,14 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_webview_plugin",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "fluttertoast",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/fluttertoast-8.0.9",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/fluttertoast-8.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -105,7 +111,7 @@
     },
     {
       "name": "http_parser",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/http_parser-4.0.1",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/http_parser-4.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -117,7 +123,7 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/lints-2.0.0",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/lints-2.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -261,7 +267,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-3.0.0",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-3.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -278,7 +284,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-10-10T19:13:57.447690Z",
+  "generated": "2022-10-30T21:37:10.505005Z",
   "generator": "pub",
   "generatorVersion": "2.18.1"
 }
