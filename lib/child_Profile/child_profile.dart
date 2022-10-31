@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unnovate/child_Profile/user_dialog.dart';
 import 'child.dart';
+import 'delchild.dart';
 
 class ChildProfile extends StatefulWidget{
   const ChildProfile({Key? key}) : super(key: key);
@@ -43,6 +44,8 @@ class _ChildProfile extends State<ChildProfile> {
         kidList.add(kid);
       });
     }
+
+
 
     void showKidDialog(){
       showDialog(context: context, builder: (_){
@@ -104,63 +107,69 @@ class _ChildProfile extends State<ChildProfile> {
             ),
               const SizedBox(height: 50,),
 
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    iconSize: 24.0,
-                    color: Colors.red,
-                    onPressed: (){
-
-                    },
-                  ),
-                  Card(
-                    margin: const EdgeInsets.all(4),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 20,),
-                        Text(
-                          'Child\'s Details',
-                          style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
-                            fontSize: 52,
-                          ),
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.75,
-                          child: ListView.builder(itemBuilder: (ctx,index){
-                            return Card(
-                              margin: const EdgeInsets.all(4),
-                              elevation: 8,
-                              child: ListTile(
-                                title: Text(
-                                  kidList[index].kidname.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.blueGrey,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                subtitle: Text('Date of Birth: ${kidList[index].age}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                trailing: Text(
-                                  kidList[index].gender,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
-                              ),
+              Card(
+                margin: const EdgeInsets.all(4),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20,),
+                    Text(
+                      'Child\'s Details',
+                      style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
+                        fontSize: 52,
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.75,
+                      child: ListView.builder(itemBuilder: (ctx,index){
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DelChildData(id: kidList[index].id)),
                             );
                           },
-                            itemCount: kidList.length,
+                          child: Card(
+                            margin: const EdgeInsets.all(4),
+                            elevation: 8,
+                            child: ListTile(
+                              title: Text(
+                                kidList[index].kidname.toString(),
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.blueGrey,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text('Date of Birth: ${kidList[index].age}',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              trailing: Column(
+                                children: [
+                                  Text(kidList[index].id.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10,),
+                                  Text(
+                                    kidList[index].gender,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        );
+                      },
+                        itemCount: kidList.length,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

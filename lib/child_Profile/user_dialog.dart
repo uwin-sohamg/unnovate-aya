@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:unnovate/Dashboard/dashboard.dart';
 import 'package:unnovate/child_Profile/child.dart';
+import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:unnovate/child_Profile/child_profile.dart';
 
 class AddChildData extends StatefulWidget{
 
@@ -15,16 +19,16 @@ class AddChildData extends StatefulWidget{
 
 class _AddChildDataState extends State<AddChildData> {
 
-  int id=4;
-
+  int id1 = Random().nextInt(100);
   var kidController = TextEditingController();
   var ageController = TextEditingController();
-  var genderController = TextEditingController();
+  var genderController;
 
   @override
   Widget build(BuildContext context) {
 
     Widget buildTextField(String hint, TextEditingController controller){
+
       return Container(
         margin: const EdgeInsets.all(4),
         child: TextField(
@@ -59,16 +63,56 @@ class _AddChildDataState extends State<AddChildData> {
             const SizedBox(height: 15,),
             buildTextField('Child\'s Name', kidController),
             buildTextField('Age in dd/mm/yyyy', ageController,),
-            buildTextField('Gender as male/female', genderController),
+
+            Column(
+              children: [
+                const SizedBox(height: 10),
+                const Text('Select gender of child:'),
+                RadioListTile(
+                  title: const Text("Male"),
+                  value: "male",
+                  groupValue: genderController,
+                  onChanged: (value){
+                    setState(() {
+                      genderController = value.toString();
+                    });
+                  },
+                ),
+
+                RadioListTile(
+                  title: const Text("Female"),
+                  value: "female",
+                  groupValue: genderController,
+                  onChanged: (value){
+                    setState(() {
+                      genderController = value.toString();
+                    });
+                  },
+                ),
+
+                RadioListTile(
+                  title: const Text("Other"),
+                  value: "other",
+                  groupValue: genderController,
+                  onChanged: (value){
+                    setState(() {
+                      genderController = value.toString();
+                    });
+                  },
+                )
+              ],
+            ),
 
             ElevatedButton(
+
                 onPressed: (){
                   final kid= User(kidController.text, ageController.text,
-                  genderController.text);
-
+                  genderController);
                   sendChildData();
                   widget.addKid(kid);
-                  Navigator.of(context).pop();
+                  _showToast();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
                 },
                 child: const Text('Add Child')
             )
@@ -80,12 +124,10 @@ class _AddChildDataState extends State<AddChildData> {
 
   sendChildData() async {
 
-    id=id+1;
-
     Map data = {
-      "id":id,
+      "id":id1,
       "doctor_Name":"Gillery",
-      "gender":genderController.text,
+      "gender":genderController,
       "doctor_Phone":"5698658877",
       "dob":ageController.text,
       "name":kidController.text
@@ -99,5 +141,42 @@ class _AddChildDataState extends State<AddChildData> {
     if (kDebugMode) {
       print(response.body);
     }
+  }
+
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("New Child Added Successfully."),
+        ],
+      ),
+    );
+
+
+    //setting up toast message location.
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
   }
 }
