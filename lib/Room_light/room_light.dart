@@ -13,9 +13,12 @@ class RoomLight extends StatefulWidget{
 
 class _RoomLight extends State<RoomLight> {
 
+  lightStatus() {
+    return http.get(Uri.parse("https://aya-uwindsor.herokuapp.com/kidsprofile/lightstatus/currentLightStatus"));
+  }
 
   changeOFF() async {
-    var lightStatus= '0';
+    var lightStatus= 1;
     if (kDebugMode) {
       print(lightStatus);
     }
@@ -32,7 +35,7 @@ class _RoomLight extends State<RoomLight> {
   }
 
   changeON() async {
-    var lightStatus= '1';
+    var lightStatus= 0;
     if (kDebugMode) {
       print(lightStatus);
     }
@@ -48,6 +51,7 @@ class _RoomLight extends State<RoomLight> {
     _showToastON();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +62,9 @@ class _RoomLight extends State<RoomLight> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(height: 100,),
+
+                    const SizedBox(height: 100,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -90,6 +97,7 @@ class _RoomLight extends State<RoomLight> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    lightStatus();
   }
 
   //toast pop-up to show message to the user.

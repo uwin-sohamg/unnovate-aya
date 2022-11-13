@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 //import 'package:unnovate/child_Profile/child_profile.dart';
 import 'package:unnovate/Dashboard/dashboard.dart';
+import 'package:intl/intl.dart';
 
 class UpdateChildData extends StatefulWidget{
 
@@ -32,14 +33,13 @@ class _UpdateChildDataState extends State<UpdateChildData> {
     createData(id2) async {
       Map data = {
         "id":id2,
-        "doctor_Name":"Gillery",
+        "name":kidController.text,
         "gender":genderController,
-        "doctor_Phone":"5698658877",
         "dob":ageController.text,
-        "name":kidController.text
+        "docid" : "1"
       };
       var body = json.encode(data);
-      var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/kidsprofile/create/"),
+      var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/kidsprofile/update/"),
           headers: {"Content-Type": "application/json"},
           body: body
       );
@@ -82,44 +82,80 @@ class _UpdateChildDataState extends State<UpdateChildData> {
 
             const SizedBox(height: 15,),
             buildTextField('Child\'s Name', kidController),
-            buildTextField('Age in dd/mm/yyyy', ageController,),
 
-            Column(
+          Container(
+              padding: const EdgeInsets.all(15),
+              height: MediaQuery.of(context).size.width / 3,
+              child: Center(
+                  child: TextField(
+                    controller: ageController,
+                    //editing controller of this TextField
+                    decoration: const InputDecoration(
+                        icon: Icon(Icons.calendar_today), //icon of text field
+                        labelText: "Enter Date" //label text of field
+                    ),
+                    readOnly: true,
+                    //set it true, so that user will not able to edit text
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1950),
+                          //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2100));
+
+                      if (pickedDate != null) {
+                        if (kDebugMode) {
+                          print(
+                            pickedDate);
+                        } //pickedDate output format => 2021-03-10 00:00:00.000
+                        String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                        if (kDebugMode) {
+                          print(
+                            formattedDate);
+                        } //formatted date output using intl package =>  2021-03-16
+                        setState(() {
+                          ageController.text =
+                              formattedDate; //set output date to TextField value.
+                        });
+                      } else {}
+                    },
+                  ))),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 10),
-                const Text('Select gender of child:'),
-                RadioListTile(
-                  title: const Text("Male"),
-                  value: "male",
-                  groupValue: genderController,
-                  onChanged: (value){
-                    setState(() {
-                      genderController = value.toString();
-                    });
-                  },
+                Expanded(
+                  child: ListTile(
+                    title: const Text('Male', style: TextStyle(
+                        fontSize: 10
+                    ),),
+                    leading: Radio(
+                      value: "male",
+                      onChanged: (value) {
+                        setState(() {
+                          genderController = value.toString();
+                        });
+                      }, groupValue: 'gender',
+                    ),
+                  ),
                 ),
 
-                RadioListTile(
-                  title: const Text("Female"),
-                  value: "female",
-                  groupValue: genderController,
-                  onChanged: (value){
-                    setState(() {
-                      genderController = value.toString();
-                    });
-                  },
+                Expanded(
+                  child: ListTile(
+                    title: const Text('Female',  style: TextStyle(
+                        fontSize: 10)),
+                    leading: Radio(
+                      value: "female",
+                      onChanged: (value) {
+                        setState(() {
+                          genderController = value.toString();
+                        });
+                      }, groupValue: 'gender',
+                    ),
+                  ),
                 ),
-
-                RadioListTile(
-                  title: const Text("Other"),
-                  value: "other",
-                  groupValue: genderController,
-                  onChanged: (value){
-                    setState(() {
-                      genderController = value.toString();
-                    });
-                  },
-                )
               ],
             ),
 

@@ -13,79 +13,82 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\debug\AndroidManifest.xml:7:5-66
-15-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\debug\AndroidManifest.xml:7:22-64
-16
-17    <application
-18        android:name="android.app.Application"
-19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-19-->[androidx.core:core:1.6.0] C:\Users\Aman\.gradle\caches\transforms-3\acbce933e4b464a5224ed377a62db1f5\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
-20        android:debuggable="true"
-21        android:icon="@mipmap/ic_launcher"
-22        android:label="unnovate" >
-23        <activity
-24            android:name="com.example.unnovate.MainActivity"
-25            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-26            android:exported="true"
-27            android:hardwareAccelerated="true"
-28            android:launchMode="singleTop"
-29            android:theme="@style/LaunchTheme"
-30            android:windowSoftInputMode="adjustResize" >
-31
-32            <!--
-33                 Specifies an Android theme to apply to this Activity as soon as
-34                 the Android process has started. This theme is visible to the user
-35                 while the Flutter UI initializes. After that, this theme continues
-36                 to determine the Window background behind the Flutter UI.
-37            -->
-38            <meta-data
-39                android:name="io.flutter.embedding.android.NormalTheme"
-40                android:resource="@style/NormalTheme" />
-41
-42            <intent-filter>
-43                <action android:name="android.intent.action.MAIN" />
-44
-45                <category android:name="android.intent.category.LAUNCHER" />
-46            </intent-filter>
-47        </activity>
-48        <!--
-49             Don't delete the meta-data below.
-50             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-51        -->
-52        <meta-data
-53            android:name="flutterEmbedding"
-54            android:value="2" />
-55
-56        <provider
-56-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-20:20
-57            android:name="androidx.core.content.FileProvider"
-57-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-62
-58            android:authorities="com.example.unnovate.fileprovider"
-58-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-64
-59            android:exported="false"
-59-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-37
-60            android:grantUriPermissions="true" >
-60-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-47
-61            <meta-data
-61-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-19:53
-62                android:name="android.support.FILE_PROVIDER_PATHS"
-62-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-67
-63                android:resource="@xml/filepaths" />
-63-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-50
-64        </provider>
-65
-66        <uses-library
-66-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-67            android:name="androidx.window.extensions"
-67-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-68            android:required="false" />
-68-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
-69        <uses-library
-69-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-70            android:name="androidx.window.sidecar"
-70-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
-71            android:required="false" />
-71-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-72    </application>
-73
-74</manifest>
+15-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\main\AndroidManifest.xml:4:5-67
+15-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\main\AndroidManifest.xml:4:22-64
+16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+16-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\main\AndroidManifest.xml:5:5-79
+16-->C:\Users\Aman\StudioProjects\unnovate\android\app\src\main\AndroidManifest.xml:5:22-76
+17
+18    <application
+19        android:name="android.app.Application"
+20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+20-->[androidx.core:core:1.6.0] C:\Users\Aman\.gradle\caches\transforms-3\acbce933e4b464a5224ed377a62db1f5\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
+21        android:debuggable="true"
+22        android:icon="@mipmap/ic_launcher"
+23        android:label="unnovate" >
+24        <activity
+25            android:name="com.example.unnovate.MainActivity"
+26            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+27            android:exported="true"
+28            android:hardwareAccelerated="true"
+29            android:launchMode="singleTop"
+30            android:theme="@style/LaunchTheme"
+31            android:windowSoftInputMode="adjustResize" >
+32
+33            <!--
+34                 Specifies an Android theme to apply to this Activity as soon as
+35                 the Android process has started. This theme is visible to the user
+36                 while the Flutter UI initializes. After that, this theme continues
+37                 to determine the Window background behind the Flutter UI.
+38            -->
+39            <meta-data
+40                android:name="io.flutter.embedding.android.NormalTheme"
+41                android:resource="@style/NormalTheme" />
+42
+43            <intent-filter>
+44                <action android:name="android.intent.action.MAIN" />
+45
+46                <category android:name="android.intent.category.LAUNCHER" />
+47            </intent-filter>
+48        </activity>
+49        <!--
+50             Don't delete the meta-data below.
+51             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+52        -->
+53        <meta-data
+54            android:name="flutterEmbedding"
+55            android:value="2" />
+56
+57        <provider
+57-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-20:20
+58            android:name="androidx.core.content.FileProvider"
+58-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-62
+59            android:authorities="com.example.unnovate.fileprovider"
+59-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-64
+60            android:exported="false"
+60-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-37
+61            android:grantUriPermissions="true" >
+61-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-47
+62            <meta-data
+62-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-19:53
+63                android:name="android.support.FILE_PROVIDER_PATHS"
+63-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-67
+64                android:resource="@xml/filepaths" />
+64-->[:flutter_webview_plugin] C:\Users\Aman\StudioProjects\unnovate\build\flutter_webview_plugin\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-50
+65        </provider>
+66
+67        <uses-library
+67-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+68            android:name="androidx.window.extensions"
+68-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+69            android:required="false" />
+69-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+70        <uses-library
+70-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+71            android:name="androidx.window.sidecar"
+71-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+72            android:required="false" />
+72-->[androidx.window:window:1.0.0-beta04] C:\Users\Aman\.gradle\caches\transforms-3\49bc944d29f70d45aa5add8e43e3247e\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+73    </application>
+74
+75</manifest>

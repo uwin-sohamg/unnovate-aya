@@ -116,6 +116,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "js",
       "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/js-0.6.4",
       "packageUri": "lib/",
@@ -159,7 +165,7 @@
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_android-2.0.20",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/path_provider_android-2.0.21",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
@@ -267,7 +273,7 @@
     },
     {
       "name": "win32",
-      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-3.0.1",
+      "rootUri": "file:///C:/Users/Aman/AppData/Local/Pub/Cache/hosted/pub.dartlang.org/win32-3.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -284,7 +290,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2022-10-30T21:37:10.505005Z",
+  "generated": "2022-11-12T06:29:31.257710Z",
   "generator": "pub",
   "generatorVersion": "2.18.1"
 }
