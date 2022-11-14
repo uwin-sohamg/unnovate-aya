@@ -19,7 +19,7 @@ class GridDashboard extends StatelessWidget {
       img: 'assets/dashboard/baby.jpg'
   );
   final Items item2 = Items(
-      title: "Kid's Vaccine",
+      title: "Kid's Diet",
       img: 'assets/dashboard/diet.jpg'
   );
   final Items item3 = Items(
@@ -60,7 +60,7 @@ class GridDashboard extends StatelessWidget {
                   if(data.title=="Kid's Profile"){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const ChildProfile()));
                   }
-                  else if(data.title=="Kid's Vaccine"){
+                  else if(data.title=="Kid's Diet"){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const ChildDiet()));
                   }
                   else if(data.title=="Light Control"){

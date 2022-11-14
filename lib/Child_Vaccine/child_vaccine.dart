@@ -20,6 +20,31 @@ class _ChildVaccine extends State<ChildVaccine> {
     id1 = id;
   }
 
+  int iid=0;
+  String ichid= '';
+  String ivid= '';
+  String m= '';
+  String t= '';
+
+  Updatevac(int iid2, String ichid2,String ivid2, String m2, String t2) async {
+    Map data = {
+      "id":iid2,
+      "childid":ichid2,
+      "vaccineid":ivid2,
+      "month":m2,
+      "taken" : t2
+    };
+    var body = json.encode(data);
+    var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/childvaccinedetails/update"),
+        headers: {"Content-Type": "application/json"},
+        body: body
+    );
+
+    if (kDebugMode) {
+      print(response.body);
+    }
+  }
+
   getvac(id2) async {
     var data = id1;
     var body = json.encode(data);
@@ -49,12 +74,8 @@ class _ChildVaccine extends State<ChildVaccine> {
       if (kDebugMode) {
         print(i);
       }
-      if(VacList[i].id==1){
-        MissedVac.add(VacList[i].vaccinename);
-      }
-      else{
-        UpVac.add(VacList[i].vaccinename);
-      }
+        UpVac.add(VacList[i].vaccineid);
+
       i++;
     }
   }
@@ -69,6 +90,7 @@ class _ChildVaccine extends State<ChildVaccine> {
   @override
   void initState() {
     super.initState();
+    int tak=0;
     getvac(id1);
   }
 
@@ -146,16 +168,6 @@ class _ChildVaccine extends State<ChildVaccine> {
                                     ),
                                   ),
 
-                                  trailing: Checkbox(
-                                    checkColor: Colors.white,
-                                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                                    value: isChecked,
-                                      onChanged: (bool? value) {
-                                      setState(() {
-                                        isChecked = value!;
-                                      });
-                                    },
-                                  ),
                                 ),
                               );
                             },
@@ -224,34 +236,36 @@ class _ChildVaccine extends State<ChildVaccine> {
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.5,
                               child: ListView.builder(itemBuilder: (ctx,index){
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                      color: Colors.blueGrey,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  elevation: 8,
-                                  child: ListTile(
-                                    title: Text(
-                                      UpVac[index],
-                                      style: const TextStyle(
-                                        fontSize: 22,
+                                return GestureDetector(
+                                  onTap: (){
+                                    if (kDebugMode) {
+                                      print(index);
+                                    }
+                                    iid= VacList[index].id;
+                                    ichid= VacList[index].childid;
+                                    ivid = VacList[index].vaccineid;
+                                    m = VacList[index].month;
+                                    t= '1';
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
                                         color: Colors.blueGrey,
-                                        fontWeight: FontWeight.bold,
                                       ),
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
+                                    margin: const EdgeInsets.all(4),
+                                    elevation: 8,
+                                    child: ListTile(
+                                      title: Text(
+                                        UpVac[index],
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.blueGrey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
 
-                                    trailing: Checkbox(
-                                      checkColor: Colors.white,
-                                      fillColor: MaterialStateProperty.resolveWith(getColor),
-                                      value: isChecked,
-                                      onChanged: (bool? value) {
-                                        setState(() {
-                                          isChecked = value!;
-                                        });
-                                      },
                                     ),
                                   ),
                                 );
@@ -270,7 +284,7 @@ class _ChildVaccine extends State<ChildVaccine> {
                               ),
                               child: TextButton(
                                 onPressed: () {
-
+                                  Updatevac(iid, ichid, ivid, m, t);
                                 },
                                 child:  Container(
                                   padding: const EdgeInsets.all(15),

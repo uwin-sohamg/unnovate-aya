@@ -12,16 +12,18 @@ class Appointment{
   late final String doctorid;
   late final String date;
   late final String time;
+  late final int id;
 
   Appointment.fromJson(Map json)
       : childid = json["childid"],
         doctorid = json["doctorid"],
         date = json["date"],
+        id = json["id"],
         time = json["time"];
 
   Map toJson(){
     return {
-      "childid": childid, "doctorid": doctorid, "date": date, "time": time
+      "childid": childid, "doctorid": doctorid, "date": date, "time": time, id: "id"
     };
   }
 

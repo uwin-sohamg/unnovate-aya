@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
 class Vaccine{
-  late final String vaccinename;
+  late final String childid;
+  late final String vaccineid;
+  late final String month;
+  late final String taken;
   late final int id;
 
   Vaccine.fromJson(Map json)
-      : vaccinename = json["vaccinename"],
+      : childid = json["childid"],
+        vaccineid = json["vaccineid"],
+        month = json["month"],
+        taken = json["taken"],
         id = json["id"];
 
   Map toJson(){
     return {
-      "vaccinename": vaccinename, "id": id
+      "childid": childid, "vaccineid":vaccineid, "month":month, "taken":taken, "id": id
     };
   }
 }

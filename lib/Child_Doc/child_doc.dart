@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:unnovate/Child_Doc/Doctor.dart';
 import 'package:unnovate/Child_Doc/appointment.dart';
+import 'package:unnovate/Child_Doc/update_app.dart';
 import 'package:unnovate/Dashboard/dashboard.dart';
 
 class ChildDoc extends StatefulWidget{
@@ -116,6 +117,8 @@ class _ChildDoc extends State<ChildDoc> {
       print(response.body);
     }
   }
+
+
   
 
   @override
@@ -327,44 +330,74 @@ class _ChildDoc extends State<ChildDoc> {
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.5,
                               child: ListView.builder(itemBuilder: (ctx,index){
-                                return Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                      color: Colors.blueGrey,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5.0),
-                                  ),
-                                  margin: const EdgeInsets.all(4),
-                                  elevation: 8,
-                                  child: ListTile(
-                                    title: Text(
-                                      app[index].doctorid.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 22,
+                                return GestureDetector(
+                                  onTap: (){
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                            title: Column(
+                                              children: [
+                                                ElevatedButton(
+                                                    onPressed: (){
+                                                      delapp(app[index].id);
+                                                      fDToast = FToast();
+                                                      fDToast.init(context);
+                                                      _showDelToast();
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                                                    },
+                                                    child: const Text('Delete Appointment',
+                                                      style: TextStyle(fontSize: 25),)
+                                                ),
+                                                ElevatedButton(
+                                                    onPressed: (){
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UpdateAppData(appid: app[index].id, chid: id1,)));
+                                                    },
+                                                    child: const Text('Update Appointment',
+                                                      style: TextStyle(fontSize: 25),)
+                                                ),
+                                              ],
+                                            )
+                                        ));
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
                                         color: Colors.blueGrey,
-                                        fontWeight: FontWeight.bold,
                                       ),
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
-                                    subtitle: Text('child: ${app[index].childid}',
-                                      style: const TextStyle(
-                                        fontSize: 18,
+                                    margin: const EdgeInsets.all(4),
+                                    elevation: 8,
+                                    child: ListTile(
+                                      title: Text(
+                                        app[index].doctorid.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.blueGrey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    trailing: Column(
-                                      children: [
-                                        Text(app[index].date.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                          ),
+                                      subtitle: Text('child: ${app[index].childid}',
+                                        style: const TextStyle(
+                                          fontSize: 18,
                                         ),
-                                        const SizedBox(height: 10,),
-                                        Text(
-                                          app[index].time.toString(),
-                                          style: const TextStyle(
-                                            fontSize: 18,
+                                      ),
+                                      trailing: Column(
+                                        children: [
+                                          Text(app[index].date.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                          const SizedBox(height: 10,),
+                                          Text(
+                                            app[index].time.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -390,6 +423,7 @@ class _ChildDoc extends State<ChildDoc> {
 
 
   late FToast fToast;
+  late FToast fDToast;
 
   _showToast() {
     Widget toast = Container(
@@ -417,6 +451,48 @@ class _ChildDoc extends State<ChildDoc> {
       gravity: ToastGravity.BOTTOM,
       toastDuration: const Duration(seconds: 2),
     );
+  }
+
+  _showDelToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Appointment Deleted."),
+        ],
+      ),
+    );
+
+    //setting up toast message location.
+    fDToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  delapp(id2) async {
+    Map data = {
+      "id": id2,
+    };
+    var body = json.encode(data);
+    var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/docAppointment/delete"),
+        headers: {"Content-Type": "application/json"},
+        body: body
+    );
+
+    if (kDebugMode) {
+      print(response.body);
+    }
   }
 }
 
