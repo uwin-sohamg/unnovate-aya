@@ -11,13 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uwindsor.unnovate.aya.model.DocAppointmentSchedule;
+import com.uwindsor.unnovate.aya.model.DoctorsList;
 import com.uwindsor.unnovate.aya.repository.DocAppointmentScheduleRepository;
+import com.uwindsor.unnovate.aya.repository.DoctorListRepository;
 
 @RestController
 public class DocAppointmentScheduleController {
 	
 	@Autowired
     private DocAppointmentScheduleRepository docAppointmentScheduleRepository;
+	
+	@Autowired
+    private DoctorListRepository doctorListRepository;
 
 	@RequestMapping(
 			  value = "/docAppointment/create", 
@@ -52,7 +57,7 @@ public class DocAppointmentScheduleController {
 
       //read JSON file and convert to a customer object
       DocAppointmentSchedule customer = objectMapper.readValue(id, DocAppointmentSchedule.class);
-      DocAppointmentSchedule cd = docAppointmentScheduleRepository.findById(Integer.parseInt(customer.getChildid()));
+      DocAppointmentSchedule cd = docAppointmentScheduleRepository.findById(customer.getId());
       cd.setDate(customer.getDate());
       cd.setTime(customer.getTime());
       
@@ -101,6 +106,20 @@ public class DocAppointmentScheduleController {
       
       String jsonStr = objectMapper.writeValueAsString(list);
     		  return jsonStr;
+	    }
+	
+	@RequestMapping(
+			  value = "/doctorList/read", 
+			  method = RequestMethod.GET)
+	@ResponseBody
+	    public String fetchDoctorList() throws Exception {
+		System.out.println("Inside read");
+		 //create ObjectMapper instance
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    List <DoctorsList> list = doctorListRepository.findAll();
+    String jsonStr = objectMapper.writeValueAsString(list);
+  		  return jsonStr;
 	    }
 
 }

@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uwindsor.unnovate.aya.model.ChildDetails;
 import com.uwindsor.unnovate.aya.model.LightStatus;
-import com.uwindsor.unnovate.aya.repository.ChildDetailsRepository;
 import com.uwindsor.unnovate.aya.repository.LightStatusRepository;
 
 @RestController
@@ -31,6 +28,7 @@ public class LightController {
 		List<LightStatus> ls = lightStatusRepository.findAll();
 		String currentStatus="";
 		LightStatus cd = new LightStatus();
+		id = id.replaceAll("\"", "");
 		 for(int i=0;i<ls.size();i++)
 	      {
 			 cd = ls.get(i);
@@ -55,7 +53,7 @@ public class LightController {
 			  value = "/lightstatus/currentLightStatus", 
 			  method = RequestMethod.GET)
 	@ResponseBody
-	    public String currentLightStatus(@RequestBody String id) throws Exception {
+	    public String currentLightStatus() throws Exception {
 		 //create ObjectMapper instance
 		List<LightStatus> ls = lightStatusRepository.findAll();
 		String currentStatus="";
