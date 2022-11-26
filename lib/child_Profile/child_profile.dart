@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,10 +28,12 @@ class _ChildProfile extends State<ChildProfile> {
   var P_mail = TextEditingController();
   var P_mob = TextEditingController();
   late final Function(Parent) addKid;
+  var P_nam= 'Loading Parent\'s Details...';
+  var em= '';
+  var mn= '';
 
 
   Widget buildTextField(String hint, TextEditingController controller){
-
     return Container(
       margin: const EdgeInsets.all(4),
       child: TextField(
@@ -47,6 +50,7 @@ class _ChildProfile extends State<ChildProfile> {
     );
   }
 
+
   void getPCharactersfromApi() async {
     PCharacterApi.getPCharacters().then((response) {
       setState(() {
@@ -55,6 +59,9 @@ class _ChildProfile extends State<ChildProfile> {
           print(response.body);
         }
         P_List = list.map((model) => Parent.fromJson(model)).toList();
+        P_nam= P_List[0].parentsname.toString();
+        mn= 'Mob: ${P_List[0].mobileno.toString()}';
+        em= 'Email: ${P_List[0].emailid.toString()}';
       });
     });
   }
@@ -74,8 +81,25 @@ class _ChildProfile extends State<ChildProfile> {
 
   @override
   void initState(){
-    getCharactersfromApi();
-    getPCharactersfromApi();
+    if(kidList.isEmpty){
+      const AlertDialog(
+        content: Text("No child data available.."),
+      );
+      if (kDebugMode) {
+        print("Empty");
+      }
+      getCharactersfromApi();
+    }
+    if(P_List.isEmpty){
+      const AlertDialog(
+        content: Text("No child data available.."),
+      );
+      if (kDebugMode) {
+        print("Empty");
+      }
+      getPCharactersfromApi();
+    }
+
     super.initState();
   }
 
@@ -140,43 +164,56 @@ class _ChildProfile extends State<ChildProfile> {
 
                   GestureDetector(
                     onTap: (){
+                      P_name.text = P_List[0].parentsname;
+                      P_mail.text = P_List[0].emailid;
+                      P_mob.text = P_List[0].mobileno;
                       showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(
-                              'Edit Details',
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.bebasNeue(
-                                  color: const Color(0xFF607C8B),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400),
+                          builder: (context) => Container(
+                            padding: const EdgeInsets.all(0),
+                            height: 450,
+                            width: 700,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                padding: const EdgeInsets.only(top: 150),
+                                child: AlertDialog(
+                                  title: Text(
+                                    'Edit Details',
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.bebasNeue(
+                                        color: const Color(0xFF607C8B),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  content: Column(
+                                    children: [
+                                      buildTextField('Parent\'s Name', P_name),
+                                      const SizedBox(height: 15,),
+                                      buildTextField('Parent\'s email', P_mail),
+                                      const SizedBox(height: 15,),
+                                      buildTextField('Parent\'s Phone Number', P_mob),
+                                      const SizedBox(height: 15,),
+                                      ElevatedButton(
+                                          onPressed: (){
+                                            sendParentData();
+                                            fToast = FToast();
+                                            fToast.init(context);
+                                            _showPToast();
+                                            Navigator.of(context).popUntil((route) => route.isFirst);
+                                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                                          },
+                                          child: const Text('Update Details')
+                                      )
+                                    ],
+                                  )
+                                ),
+                              ),
                             ),
-                            content: Column(
-                              children: [
-                                buildTextField('Parent\'s Name', P_name),
-                                const SizedBox(height: 15,),
-                                buildTextField('Parent\'s email', P_mail),
-                                const SizedBox(height: 15,),
-                                buildTextField('Parent\'s Phone Number', P_mob),
-                                const SizedBox(height: 15,),
-                                ElevatedButton(
-                                    onPressed: (){
-                                      sendParentData();
-                                      fToast = FToast();
-                                      fToast.init(context);
-                                      _showPToast();
-                                      Navigator.of(context).popUntil((route) => route.isFirst);
-                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
-                                    },
-                                    child: const Text('Update Details')
-                                )
-                              ],
-                            )
                           ));
                     },
                     child: ListTile(
                       title: Text(
-                        P_List[0].parentsname.toString(),
+                        P_nam,
                         style: const TextStyle(
                           fontSize: 22,
                           color: Colors.blueGrey,
@@ -184,16 +221,23 @@ class _ChildProfile extends State<ChildProfile> {
                         ),
                       ),
                       subtitle: Text(
-                        'Email: ${P_List[0].emailid.toString()}',
+                        em,
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      trailing: Text(
-                        'Mob: ${P_List[0].mobileno.toString()}',
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            mn,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const Icon(Icons.edit),
+                        ],
                       ),
                     ),
                   ),
@@ -220,7 +264,7 @@ class _ChildProfile extends State<ChildProfile> {
                           onTap: (){
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => DelChildData(id: kidList[index].id)),
+                              MaterialPageRoute(builder: (context) => DelChildData(id: kidList[index].id, n: kidList[index].kidname, d: kidList[index].age, g: kidList[index].gender,)),
                             );
                           },
                           child: Card(

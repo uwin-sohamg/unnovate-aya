@@ -9,12 +9,16 @@ import 'package:intl/intl.dart';
 
 class UpdateAppData extends StatefulWidget{
 
-  const UpdateAppData({super.key, required this.appid, required this.chid});
+  const UpdateAppData({super.key, required this.appid, required this.chid, required this.doc, required this.docSelect, required this.AOD, required this.AOT});
   final int appid;
   final int chid;
+  final int doc;
+  final String docSelect;
+  final String AOD;
+  final String AOT;
 
   @override
-  _UpdateAppData createState() => _UpdateAppData(appid,chid);
+  _UpdateAppData createState() => _UpdateAppData(appid, chid, doc, docSelect, AOD, AOT);
 }
 
 class _UpdateAppData extends State<UpdateAppData> {
@@ -22,12 +26,21 @@ class _UpdateAppData extends State<UpdateAppData> {
   int id2=0;
   int id1=0;
   int id=0;
-  _UpdateAppData(appid,chid) {
+  int doc1=0;
+  int docSelect1=0;
+  String AOD1= '';
+  String AOT1= '';
+  _UpdateAppData(appid, chid, doc, docSelect, AOD, AOT) {
     id1 = chid;
     id = appid;
+    doc1 = doc;
+    docSelect1 = int.parse(docSelect);
+    AOD1 = AOD;
+    AOT1 = AOT;
   }
 
   List<Doc> Doc_List = [];
+  List<bool> _selectedD = [];
 
 
   getvac() async {
@@ -47,14 +60,35 @@ class _UpdateAppData extends State<UpdateAppData> {
     });
   }
 
+  TimeOfDay stringToTimeOfDay(String tod) {
+    final format = DateFormat.jm(); //"6:00 AM"
+    return TimeOfDay.fromDateTime(format.parse(tod));
+  }
+
+  selecDoc(){
+    dateController.text = AOD1;
+    time = stringToTimeOfDay(AOT1);
+    for(int ct=0; ct<doc1; ct++){
+      if(ct == docSelect1-1){
+        _selectedD.add(true);
+        if (kDebugMode) {
+          print(_selectedD[ct]);
+        }
+      }
+      else{
+        _selectedD.add(false);
+        if (kDebugMode) {
+          print(_selectedD[ct]);
+        }
+      }
+    }
+  }
+
+  var dateController = TextEditingController();
+  TimeOfDay time = const TimeOfDay(hour: 12, minute: 30);
 
   @override
   Widget build(BuildContext context) {
-    TimeOfDay time = const TimeOfDay(hour: 12, minute: 30);
-
-    var dateController = TextEditingController();
-    var timeController = TextEditingController();
-
 
     Updateapp(int iid1, int iid2,int iid3) async {
       Map data = {
@@ -62,7 +96,7 @@ class _UpdateAppData extends State<UpdateAppData> {
         "childid":iid2,
         "doctorid":iid3,
         "date":dateController.text,
-        "time" : timeController.text
+        "time" : time.format(context)
       };
       var body = json.encode(data);
       var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/docAppointment/update"),
@@ -75,41 +109,20 @@ class _UpdateAppData extends State<UpdateAppData> {
       }
     }
 
-
-    Widget buildTextField(String hint, TextEditingController controller){
-      final hours= time.hour.toString().padLeft(2, '0');
-      final minutes= time.minute.toString().padLeft(2, '0');
-
-
-      return Container(
-        margin: const EdgeInsets.all(4),
-        child: TextField(
-          decoration: InputDecoration(
-              labelText: hint,
-              border: const OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.black38,
-                  )
-              )
-          ),
-          controller: controller,
-        ),
-      );
-    }
-
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Text('Add Child\'s Data',
+            const SizedBox(height: 70,),
+            const Text('Update Appointment Details',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 32,
+                fontSize: 30,
                 color: Colors.blueGrey,
               ),
             ),
-
+            const SizedBox(height: 30,),
             Column(
                     children: [
                       Row(
@@ -151,28 +164,33 @@ class _UpdateAppData extends State<UpdateAppData> {
                                         });
                                       } else {}
                                     },
-                                  ))),
+                                  )
+                              )
+                          ),
 
                           IconButton(onPressed: () async {
                             TimeOfDay? newTime = await showTimePicker(context: context, initialTime: time);
                             if(newTime==null) return;
-                            setState(() => timeController.text=newTime.toString());
+                            setState(() => time= newTime);
                           }, icon: const Icon(Icons.timelapse)),
 
                           Expanded(
                             child: Text(
-                              '${time.hour}:${time.minute}',
+                              time.format(context),
                               style: const TextStyle(fontSize: 20),
                             ),
                           ),
-
                         ],
                       ),
 
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Please select doctor from list:',
+                        style: TextStyle(fontSize: 20),
+                      ),
                       SingleChildScrollView(
                         child: Container(
-                          height: MediaQuery.of(context).size.height * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.4,
                           child: ListView.builder(itemBuilder: (ctx,index){
                             return GestureDetector(
                               onTap: (){
@@ -180,6 +198,18 @@ class _UpdateAppData extends State<UpdateAppData> {
                                 if (kDebugMode) {
                                   print(index);
                                 }
+                                setState(() {
+                                  int i;
+                                  for(i=0; i<_selectedD.length; i++){
+                                    _selectedD[i] = false;
+                                  }
+                                  if(_selectedD[index] == true){
+                                    _selectedD[index] = false;
+                                  }
+                                  else{
+                                    _selectedD[index] = true;
+                                  }
+                                });
                               },
                               child: Card(
                                 shape: RoundedRectangleBorder(
@@ -191,11 +221,11 @@ class _UpdateAppData extends State<UpdateAppData> {
                                 margin: const EdgeInsets.all(4),
                                 elevation: 8,
                                 child: ListTile(
+                                  tileColor: _selectedD[index] ? Colors.blue : null,
                                   title: Text(
                                     Doc_List[index].docname,
                                     style: const TextStyle(
                                       fontSize: 22,
-                                      color: Colors.blueGrey,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -228,7 +258,7 @@ class _UpdateAppData extends State<UpdateAppData> {
                               padding: const EdgeInsets.all(15),
                               child: const Center(
                                 child:  Text(
-                                  'Submit',                                    //making button to login to the dashboard.
+                                  'Update',                                    //making button to login to the dashboard.
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -257,6 +287,7 @@ class _UpdateAppData extends State<UpdateAppData> {
     fToast = FToast();
     fToast.init(context);
     getvac();
+    selecDoc();
   }
 
   _showToast() {

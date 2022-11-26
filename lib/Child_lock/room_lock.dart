@@ -16,6 +16,7 @@ class RoomLock extends StatefulWidget{
 class _RoomLock extends State<RoomLock> {
 
   var lockController = TextEditingController();
+  bool subButton= false;
 
   sendLockData() async {
 
@@ -25,6 +26,13 @@ class _RoomLock extends State<RoomLock> {
         headers: {"Content-Type": "application/json"},
         body: body
     );
+
+    if(response.body.toString() == 'Access Granted'){
+      _showGranted();
+    }
+    else{
+      _showNotGranted();
+    }
 
     if (kDebugMode) {
       print(response.body);
@@ -58,7 +66,7 @@ class _RoomLock extends State<RoomLock> {
                         hintText: 'Password',                               //setting up input section for user password input.
                       )
                     ),
-                controller: controller,
+                controller: lockController,
               ),
             ),
           ),
@@ -84,7 +92,7 @@ class _RoomLock extends State<RoomLock> {
                   const SizedBox(height: 75),
 
                   Text(
-                    'Hello Again',
+                    'Door Lock',
                     style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
                       fontSize: 52,
                     ),
@@ -102,31 +110,30 @@ class _RoomLock extends State<RoomLock> {
 
                   buildTextField('Password', lockController),
 
-                  const SizedBox(height: 15,),
+                  const SizedBox(height: 20,),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child:   Container(
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple,
-                        borderRadius: BorderRadius.circular(12),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        disabledForegroundColor: Colors.blue.withOpacity(0.38), disabledBackgroundColor: Colors.blue.withOpacity(0.12)
                       ),
-                      child: TextButton(
-                        onPressed: () {
+                    onPressed: subButton
+                        ? (){
                             sendLockData();
-                            _showToast();
-                          },
-                        child:  Container(
-                          padding: const EdgeInsets.all(15),
-                          child: const Center(
-                            child:  Text(
-                              'Unlock',                                    //making button to login to the dashboard.
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
+                            setState(() {
+                              subButton = false;
+                              lockController.clear();
+                            });
+                          } : null,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 120, left: 120, top: 20, bottom: 20),
+                        child: Text(
+                          'Unlock',
+                          style: TextStyle(
+                            fontSize: 25,
                           ),
                         ),
                       ),
@@ -148,13 +155,22 @@ class _RoomLock extends State<RoomLock> {
 
   @override
   void initState() {
+    if (kDebugMode) {
+      print(lockController.text);
+    }
+    lockController.addListener(() {
+      final subButton = lockController.text.isNotEmpty;
+      setState(() {
+        this.subButton = subButton;
+      });
+    });
     super.initState();
     fToast = FToast();
     fToast.init(context);
   }
 
   //toast pop-up to show message to the user.
-  _showToast() {
+  _showGranted() {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
@@ -169,6 +185,34 @@ class _RoomLock extends State<RoomLock> {
             width: 12.0,
           ),
           Text("Unlocked"),
+        ],
+      ),
+    );
+
+
+    //setting up toast message location.
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
+
+  _showNotGranted() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.redAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          Icon(Icons.cancel),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("Access Denied"),
         ],
       ),
     );

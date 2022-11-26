@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:unnovate/Child_Diet/child_diet.dart';
-import 'package:unnovate/Child_Vaccine/child_vaccine.dart';
+import 'package:unnovate/Child_Diet/diet_nav.dart';
 import 'package:unnovate/child_Profile/child_profile.dart';
-//import 'package:unnovate/Child_Vaccine/child_vaccine.dart';
 import 'package:unnovate/Room_light/room_light.dart';
 import 'package:unnovate/Room_music/room_music.dart';
-//import 'package:unnovate/Child_CCTV/child_camera.dart';
 import 'package:unnovate/Child_lock/room_lock.dart';
 
 import '../Child_Vaccine/vacc_nav.dart';
@@ -61,7 +58,7 @@ class GridDashboard extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const ChildProfile()));
                   }
                   else if(data.title=="Kid's Diet"){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ChildDiet()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const DietNav()));
                   }
                   else if(data.title=="Light Control"){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const RoomLight()));
@@ -78,7 +75,7 @@ class GridDashboard extends StatelessWidget {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(image: AssetImage(data.img),opacity: 0.4, fit: BoxFit.cover),
+                    image: DecorationImage(image: AssetImage(data.img), fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -89,8 +86,10 @@ class GridDashboard extends StatelessWidget {
                         style: GoogleFonts.openSans(
                             textStyle: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600)),
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold
+                            )
+                        ),
                       ),
                     ),
                   ],

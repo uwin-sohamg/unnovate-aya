@@ -20,41 +20,59 @@ class RoomMusic extends StatelessWidget {
       theme: ThemeData.dark(),
       routes: {
         "/": (_) => const Home(),
-        "/rhythm": (_) => const WebviewScaffold(
-          url: urlRhythm,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/rhythm": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlRhythm,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
-        "/sleep": (_) => const WebviewScaffold(
-          url: urlMusic,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/sleep": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlMusic,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
-        "/search": (_) => const WebviewScaffold(
-          url: urlSearch,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/search": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlSearch,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
-        "/spotify": (_) => const WebviewScaffold(
-          url: urlSpotify,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/spotify": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlSpotify,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
-        "/saavan": (_) => const WebviewScaffold(
-          url: urlSaavan,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/saavan": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlSaavan,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
-        "/gaana": (_) => const WebviewScaffold(
-          url: urlGaana,
-          withJavascript: true,
-          withLocalStorage: true,
-          withZoom: true,
+        "/gaana": (_) => Container(
+          padding: const EdgeInsets.only(top: 50),
+          child: const WebviewScaffold(
+            url: urlGaana,
+            withJavascript: true,
+            withLocalStorage: true,
+            withZoom: true,
+          ),
         ),
       },
 

@@ -13,7 +13,7 @@ class HomeState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.black12,
       body: Column(
         children: <Widget>[
           const SizedBox(
@@ -40,17 +40,43 @@ class HomeState extends State<Dashboard> {
             height: 40,
           ),
           GridDashboard(),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const DocNav()));
-            },
-            child: Container(
-              height: 75,
+          Container(
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                image: const DecorationImage(image: AssetImage('assets/dashboard/doc.png'),opacity: 0.4, ),
-                borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-          ),
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const DocNav()));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Container(
+                        height: 75,
+                        decoration: BoxDecoration(
+                            image: const DecorationImage(image: AssetImage('assets/dashboard/doc.png'),opacity: 0.4, ),
+                            borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Expanded(
+                    child: Text(
+                      'Doctor\'s Appointment',
+                      style: TextStyle(
+                          fontSize: 20,
+                        color: Colors.black45
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),

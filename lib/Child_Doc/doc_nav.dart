@@ -53,72 +53,75 @@ class _DocNav extends State<DocNav> {
 
               Card(
                 margin: const EdgeInsets.all(4),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20,),
-                    Text(
-                      'Select Child to Book Appointment',
-                      style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
-                        fontSize: 35,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20,),
+                      Text(
+                        'Select Child to Book Appointment',
+                        style: GoogleFonts.bebasNeue(   //setting up welcome text on login page.
+                          fontSize: 30,
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.75,
-                      child: ListView.builder(itemBuilder: (ctx,index){
-                        return GestureDetector(
-                          onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ChildDoc(id: kidList[index].id)),
-                            );
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                color: Colors.blueGrey,
-                              ),
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            margin: const EdgeInsets.all(4),
-                            elevation: 8,
-                            child: ListTile(
-                              title: Text(
-                                kidList[index].kidname.toString(),
-                                style: const TextStyle(
-                                  fontSize: 22,
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.75,
+                        child: ListView.builder(itemBuilder: (ctx,index){
+                          return GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ChildDoc(id: kidList[index].id)),
+                              );
+                            },
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
                                   color: Colors.blueGrey,
-                                  fontWeight: FontWeight.bold,
                                 ),
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
-                              subtitle: Text('Date of Birth: ${kidList[index].age}',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                              margin: const EdgeInsets.all(4),
+                              elevation: 8,
+                              child: ListTile(
+                                title: Text(
+                                  kidList[index].kidname.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.blueGrey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              trailing: Column(
-                                children: [
-                                  Text(kidList[index].id.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                    ),
+                                subtitle: Text('Date of Birth: ${kidList[index].age}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
-                                  const SizedBox(height: 10,),
-                                  Text(
-                                    kidList[index].gender,
-                                    style: const TextStyle(
-                                      fontSize: 18,
+                                ),
+                                trailing: Column(
+                                  children: [
+                                    Text(kidList[index].id.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10,),
+                                    Text(
+                                      kidList[index].gender,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                        itemCount: kidList.length,
+                          );
+                        },
+                          itemCount: kidList.length,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -25,6 +25,7 @@ class _ChildDoc extends State<ChildDoc> {
   _ChildDoc(id) {
     id1 = id;
   }
+  bool a = true;
 
   getvac() async {
     var response = await http.get(Uri.parse("https://aya-uwindsor.herokuapp.com/doctorList/read"),
@@ -58,8 +59,18 @@ class _ChildDoc extends State<ChildDoc> {
         print(response.body);
       }
       app = list.map((model) => Appointment.fromJson(model)).toList();
+      for(int i=0; i< app.length; i++){
+        if(app[i].childid == id1.toString()){
+          app2.add(app[i]);
+        }
+      }
+      if(app2.isEmpty){
+          a=false;
+          print(a);
+      }
     });
   }
+
 
   sepVac(){
     int i=0;
@@ -68,6 +79,7 @@ class _ChildDoc extends State<ChildDoc> {
         print(i);
       }
       MissedVac.add(Doc_List[i].docname);
+      _selectedD.add(false);
       i++;
     }
     getapp();
@@ -76,26 +88,35 @@ class _ChildDoc extends State<ChildDoc> {
   int? _selectedIndex=0;
   int? _selectIndex=1;
   final List<Vacc> vaccine = [
-    const Vacc('New Appointments'),
-    const Vacc('Scheduled Appointments'),
+    const Vacc('  New\n  Appointments'),
+    const Vacc('  Scheduled\n  Appointments'),
   ];
+
+  bool b2= false;
+  bool b1= false;
 
   @override
   void initState() {
     super.initState();
     getvac();
+    dateController.addListener(() {
+      final b2 = dateController.text.isNotEmpty;
+      setState(() {
+        this.b2 = b2;
+      });
+    });
   }
 
 
   TimeOfDay time = const TimeOfDay(hour: 12, minute: 30);
 
-
   var dateController = TextEditingController();
-  var timeController = TextEditingController();
 
   List<Doc> Doc_List = [];
   List<Appointment> app = [];
+  List<Appointment> app2 = [];
   List<String> MissedVac = [];
+  List<bool> _selectedD = [];
 
 
 
@@ -105,7 +126,7 @@ class _ChildDoc extends State<ChildDoc> {
       "childid":id1,
       "doctorid":id3,
       "date":dateController.text,
-      "time" : timeController.text
+      "time" : time.format(context)
     };
     var body = json.encode(data);
     var response = await http.post(Uri.parse("https://aya-uwindsor.herokuapp.com/docAppointment/create"),
@@ -140,9 +161,10 @@ class _ChildDoc extends State<ChildDoc> {
     }
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.all(10),
+        child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
@@ -151,7 +173,6 @@ class _ChildDoc extends State<ChildDoc> {
                   expansionCallback: (i, b) {
                     if (_selectIndex == i){
                       _selectIndex = null;
-                      _selectedIndex = i;
                     }
                     else{
                       _selectIndex = i;
@@ -208,28 +229,32 @@ class _ChildDoc extends State<ChildDoc> {
                                         });
                                       } else {}
                                     },
-                                  ))),
+                                  )
+                              )
+                          ),
 
                               IconButton(onPressed: () async {
                                 TimeOfDay? newTime = await showTimePicker(context: context, initialTime: time);
                                 if(newTime==null) return;
-                                setState(() => timeController.text=newTime.toString());
+                                setState(() => time= newTime);
                               }, icon: const Icon(Icons.timelapse)),
 
                               Expanded(
                                 child: Text(
-                                  '${time.hour}:${time.minute}',
+                                  time.format(context),
                                   style: const TextStyle(fontSize: 20),
                                 ),
                               ),
-
                             ],
                           ),
-
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 30),
+                          const Text(
+                            'Please select doctor from list:',
+                            style: TextStyle(fontSize: 20),
+                          ),
                           SingleChildScrollView(
                             child: Container(
-                                  height: MediaQuery.of(context).size.height * 0.5,
+                                  height: MediaQuery.of(context).size.height * 0.4,
                                   child: ListView.builder(itemBuilder: (ctx,index){
                                     return GestureDetector(
                                       onTap: (){
@@ -237,6 +262,19 @@ class _ChildDoc extends State<ChildDoc> {
                                         if (kDebugMode) {
                                           print(index);
                                         }
+                                        setState(() {
+                                          int i;
+                                          for(i=0; i<_selectedD.length; i++){
+                                            _selectedD[i] = false;
+                                          }
+                                          if(_selectedD[index] == true){
+                                            _selectedD[index] = false;
+                                          }
+                                          else{
+                                            _selectedD[index] = true;
+                                            b1=true;
+                                          }
+                                        });
                                       },
                                       child: Card(
                                         shape: RoundedRectangleBorder(
@@ -248,11 +286,11 @@ class _ChildDoc extends State<ChildDoc> {
                                         margin: const EdgeInsets.all(4),
                                         elevation: 8,
                                         child: ListTile(
+                                          tileColor: _selectedD[index] ? Colors.blue : null,
                                           title: Text(
                                             Doc_List[index].docname,
                                             style: const TextStyle(
                                               fontSize: 22,
-                                              color: Colors.blueGrey,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -266,32 +304,30 @@ class _ChildDoc extends State<ChildDoc> {
                                 ),
                           ),
                           const SizedBox(height: 20,),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                            child:   Container(
-                              decoration: BoxDecoration(
-                                color: Colors.deepPurple,
-                                borderRadius: BorderRadius.circular(12),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  disabledForegroundColor: Colors.blue.withOpacity(0.38), disabledBackgroundColor: Colors.blue.withOpacity(0.12)
                               ),
-                              child: TextButton(
-                                onPressed: () {
-                                  scheduleapp(id2);
-                                  fToast = FToast();
-                                  fToast.init(context);
-                                  _showToast();
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
-                                },
-                                child:  Container(
-                                  padding: const EdgeInsets.all(15),
-                                  child: const Center(
-                                    child:  Text(
-                                      'Submit',                                    //making button to login to the dashboard.
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
+                              onPressed: b1 && b2
+                                ? () {
+                                scheduleapp(id2);
+                                fToast = FToast();
+                                fToast.init(context);
+                                _showToast();
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                              } : null,
+                              child: const Padding(
+                                padding: EdgeInsets.only(top: 15, bottom: 15, left: 20, right: 20),
+                                child: Text(
+                                  'Schedule Appointment',                                    //making button to login to the dashboard.
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
                                   ),
                                 ),
                               ),
@@ -308,7 +344,6 @@ class _ChildDoc extends State<ChildDoc> {
                   expansionCallback: (i, b) {
                     if (_selectedIndex == i) {
                       _selectedIndex = null;
-                      _selectIndex = i;
                     }
                     else {
                       _selectedIndex = i;
@@ -350,7 +385,7 @@ class _ChildDoc extends State<ChildDoc> {
                                                 ),
                                                 ElevatedButton(
                                                     onPressed: (){
-                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UpdateAppData(appid: app[index].id, chid: id1,)));
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => UpdateAppData(appid: app[index].id, chid: id1, doc: _selectedD.length, docSelect: app[index].doctorid.toString(), AOD: app[index].date.toString(), AOT: app[index].time.toString())));
                                                     },
                                                     child: const Text('Update Appointment',
                                                       style: TextStyle(fontSize: 25),)
@@ -359,50 +394,75 @@ class _ChildDoc extends State<ChildDoc> {
                                             )
                                         ));
                                   },
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                        color: Colors.blueGrey,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                    margin: const EdgeInsets.all(4),
-                                    elevation: 8,
-                                    child: ListTile(
-                                      title: Text(
-                                        app[index].doctorid.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 22,
+                                  child: a ? Padding(
+                                    padding: const EdgeInsets.only(left: 8, right: 8),
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
                                           color: Colors.blueGrey,
-                                          fontWeight: FontWeight.bold,
                                         ),
+                                        borderRadius: BorderRadius.circular(5.0),
                                       ),
-                                      subtitle: Text('child: ${app[index].childid}',
-                                        style: const TextStyle(
-                                          fontSize: 18,
+                                      margin: const EdgeInsets.all(4),
+                                      elevation: 8,
+                                      child: ListTile(
+                                        title: Text(
+                                          app2[index].doctorid.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.blueGrey,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      trailing: Column(
-                                        children: [
-                                          Text(app[index].date.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                            ),
+                                        subtitle: Text('child: ${app2[index].childid}',
+                                          style: const TextStyle(
+                                            fontSize: 18,
                                           ),
-                                          const SizedBox(height: 10,),
-                                          Text(
-                                            app[index].time.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 18,
+                                        ),
+                                        trailing: Column(
+                                          children: [
+                                            Text(app2[index].date.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 10,),
+                                            Text(
+                                              app2[index].time.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ): Column(
+                                    children: [
+                                      const SizedBox(height: 50,),
+                                      AlertDialog(
+                                        title: Text(
+                                          '',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.bebasNeue(
+                                              color: const Color(0xFF607C8B),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        content: Text(
+                                          "No Scheduled Appointments for this Child",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.bebasNeue(
+                                              color: const Color(0xFF94B0C0),
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 );
                               },
-                                itemCount: app.length,
+                                itemCount: app2.length,
                               ),
                             ),
                           ),
@@ -412,7 +472,6 @@ class _ChildDoc extends State<ChildDoc> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

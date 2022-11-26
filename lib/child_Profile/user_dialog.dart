@@ -7,10 +7,9 @@ import 'package:unnovate/Dashboard/dashboard.dart';
 import 'package:unnovate/child_Profile/child.dart';
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:unnovate/child_Profile/child_profile.dart';
+
 
 class AddChildData extends StatefulWidget{
-
   final Function(User) addKid;
   const AddChildData(this.addKid, {super.key});
 
@@ -20,10 +19,13 @@ class AddChildData extends StatefulWidget{
 
 class _AddChildDataState extends State<AddChildData> {
 
-  int id1 = Random().nextInt(100);
+  late int id1 = Random().nextInt(100);
   var kidController = TextEditingController();
   var ageController = TextEditingController();
-  var genderController;
+  String genderController = '';
+  bool b1= false;
+  bool b2= false;
+  bool b3= false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _AddChildDataState extends State<AddChildData> {
 
     return Container(
       padding: const EdgeInsets.all(0),
-      height: 350,
+      height: 450,
       width: 700,
       child: SingleChildScrollView(
         child: Column(
@@ -106,7 +108,7 @@ class _AddChildDataState extends State<AddChildData> {
 
             const SizedBox(height: 15),
             const Text('Select gender of child:'),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -120,8 +122,9 @@ class _AddChildDataState extends State<AddChildData> {
                       onChanged: (value) {
                         setState(() {
                           genderController = value.toString();
+                          b3 = true;
                         });
-                      }, groupValue: 'gender',
+                      }, groupValue: genderController,
                     ),
                   ),
                 ),
@@ -129,33 +132,50 @@ class _AddChildDataState extends State<AddChildData> {
                 Expanded(
                   child: ListTile(
                     title: const Text('Female',  style: TextStyle(
-                        fontSize: 10)),
+                        fontSize: 12)),
                     leading: Radio(
                       value: "female",
                       onChanged: (value) {
                         setState(() {
                           genderController = value.toString();
+                          b3 = true;
                         });
-                      }, groupValue: 'gender',
+                      }, groupValue: genderController,
                     ),
                   ),
                 ),
               ],
             ),
 
-            ElevatedButton(
+            const SizedBox(height: 10,),
 
-                onPressed: (){
-                  final kid= User(kidController.text, ageController.text,
-                  genderController);
-                  sendChildData();
-                  widget.addKid(kid);
-                  _showToast();
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
-                },
-                child: const Text('Add Child')
-            )
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  disabledForegroundColor: Colors.blue.withOpacity(0.38), disabledBackgroundColor: Colors.blue.withOpacity(0.12)
+              ),
+              onPressed: b1 && b2 && b3
+                  ? (){
+                final kid= User(kidController.text, ageController.text,
+                    genderController);
+                sendChildData();
+                widget.addKid(kid);
+                _showToast();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+              } : null,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Text(
+                  'Add Child',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+
           ],
         ),
       ),
@@ -188,6 +208,18 @@ class _AddChildDataState extends State<AddChildData> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    kidController.addListener(() {
+      final b1 = kidController.text.isNotEmpty;
+      setState(() {
+        this.b1 = b1;
+      });
+    });
+    ageController.addListener(() {
+      final b2 = ageController.text.isNotEmpty;
+      setState(() {
+        this.b2 = b2;
+      });
+    });
   }
 
   _showToast() {

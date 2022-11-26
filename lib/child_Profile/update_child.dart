@@ -3,29 +3,38 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-//import 'package:unnovate/child_Profile/child_profile.dart';
 import 'package:unnovate/Dashboard/dashboard.dart';
 import 'package:intl/intl.dart';
 
 class UpdateChildData extends StatefulWidget{
 
-  const UpdateChildData({super.key, required this.id});
+  const UpdateChildData({super.key, required this.id, required this.n, required this.d, required this.g});
   final int id;
+  final String n;
+  final String d;
+  final String g;
 
   @override
-  _UpdateChildDataState createState() => _UpdateChildDataState(id);
+  _UpdateChildDataState createState() => _UpdateChildDataState(id, n, d, g);
 }
 
 class _UpdateChildDataState extends State<UpdateChildData> {
 
   int id1=0;
-  _UpdateChildDataState(id) {
+  String g1= '';
+  _UpdateChildDataState(id, n, d, g) {
     id1 = id;
+    kidController.text = n;
+    ageController.text = d;
+    g1 = g;
   }
 
   var kidController = TextEditingController();
   var ageController = TextEditingController();
-  var genderController;
+  String genderController = '';
+  bool b1= true;
+  bool b2= true;
+  bool b3= true;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +81,7 @@ class _UpdateChildDataState extends State<UpdateChildData> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 70,),
             const Text('Add Child\'s Data',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -132,12 +142,13 @@ class _UpdateChildDataState extends State<UpdateChildData> {
                         fontSize: 10
                     ),),
                     leading: Radio(
-                      value: "male",
+                      value: 'male',
                       onChanged: (value) {
                         setState(() {
                           genderController = value.toString();
+                          b3 = true;
                         });
-                      }, groupValue: 'gender',
+                      }, groupValue: genderController,
                     ),
                   ),
                 ),
@@ -147,12 +158,13 @@ class _UpdateChildDataState extends State<UpdateChildData> {
                     title: const Text('Female',  style: TextStyle(
                         fontSize: 10)),
                     leading: Radio(
-                      value: "female",
+                      value: 'female',
                       onChanged: (value) {
                         setState(() {
                           genderController = value.toString();
+                          b3 = true;
                         });
-                      }, groupValue: 'gender',
+                      }, groupValue: genderController,
                     ),
                   ),
                 ),
@@ -160,15 +172,29 @@ class _UpdateChildDataState extends State<UpdateChildData> {
             ),
 
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  disabledForegroundColor: Colors.blue.withOpacity(0.38), disabledBackgroundColor: Colors.blue.withOpacity(0.12)
+              ),
+              onPressed: b1 && b2 && b3
+                  ? (){
+                createData(id1);
+                _showToast();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+              } : null,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: const Text(
+                  'Update Child',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
 
-                onPressed: (){
-                  createData(id1);
-                  _showToast();
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
-                },
-                child: const Text('Add Child')
-            )
           ],
         ),
       ),
@@ -182,6 +208,22 @@ class _UpdateChildDataState extends State<UpdateChildData> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    kidController.addListener(() {
+      final b1 = kidController.text.isNotEmpty;
+      setState(() {
+        this.b1 = b1;
+      });
+    });
+    ageController.addListener(() {
+      final b2 = ageController.text.isNotEmpty;
+      setState(() {
+        this.b2 = b2;
+      });
+    });
+    print(g1);
+    setState(() {
+      genderController = g1;
+    });
   }
 
   _showToast() {
